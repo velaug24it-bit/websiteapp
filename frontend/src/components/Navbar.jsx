@@ -76,12 +76,6 @@ const Navbar = () => {
           >
             Track Orders
           </Link>
-          <Link
-            to="/admin/login"
-            className="text-xs font-semibold px-3 py-1 rounded-full bg-jaggery-100 text-jaggery-800 hover:bg-jaggery-200 transition-colors"
-          >
-            Admin Portal
-          </Link>
         </div>
 
         {/* Right Actions: Cart & Profile */}
@@ -185,13 +179,6 @@ const Navbar = () => {
             className="block text-sm font-bold text-jaggery-800 py-1"
           >
             My Orders & Purchases
-          </Link>
-          <Link
-            to="/admin/login"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-semibold text-brand-700 py-1"
-          >
-            Admin Dashboard
           </Link>
 
           <div className="pt-2 border-t border-jaggery-100">
