@@ -49,6 +49,15 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
+// Root health check endpoint for Render
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'online',
+    service: 'Groundnut Candy (Kadalai Mittai) API',
+    version: '1.0.0'
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
