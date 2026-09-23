@@ -5,13 +5,31 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
   }
   body {
     background-color: #FAF7F2;
     color: #261108;
     overflow-x: hidden;
+    touch-action: manipulation;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  input, textarea, select, button {
+    touch-action: manipulation;
   }
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

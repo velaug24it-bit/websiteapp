@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, Menu, X, LogOut, Package, Sparkles } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, LogOut, Package, Sparkles, Download } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { usePwa } from '../context/PwaContext';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const { totalCount } = useCart();
   const { user, logout } = useAuth();
+  const { promptInstall, isInstalled } = usePwa();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,22 +25,22 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-jaggery-100 shadow-sm transition-all duration-300">
       {/* Top Banner Notice */}
-      <div className="bg-jaggery-800 text-brand-100 text-xs py-1.5 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-brand-400" />
-        <span>Authentic Kovilpatti Recipe • 100% Natural Organic Jaggery • Free Delivery on Orders Over ₹150!</span>
+      <div className="bg-jaggery-800 text-brand-100 text-[10px] sm:text-xs py-1 sm:py-1.5 px-3 text-center font-medium tracking-wide flex items-center justify-center gap-1.5 truncate">
+        <Sparkles className="w-3 h-3 text-brand-400 shrink-0" />
+        <span className="truncate">Authentic Kovilpatti Recipe • 100% Organic Jaggery • Free Delivery Over ₹150!</span>
       </div>
 
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-jaggery-800 flex items-center justify-center shadow-md transform group-hover:scale-105 transition-transform duration-300">
-            <span className="text-2xl">🥜</span>
+        <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand-500 to-jaggery-800 flex items-center justify-center shadow-md transform group-hover:scale-105 transition-transform duration-300">
+            <span className="text-lg sm:text-2xl">🥜</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-serif text-2xl font-bold tracking-tight text-jaggery-900 leading-none">
+            <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-jaggery-900 leading-none">
               Kadalai <span className="text-brand-600">Mittai</span>
             </span>
-            <span className="text-[11px] font-semibold text-jaggery-500 tracking-widest uppercase mt-1">
+            <span className="text-[9px] sm:text-[11px] font-semibold text-jaggery-500 tracking-widest uppercase mt-0.5 sm:mt-1">
               Traditional Groundnut Candy
             </span>
           </div>
@@ -76,6 +78,18 @@ const Navbar = () => {
           >
             Track Orders
           </Link>
+
+          {/* Desktop Download App Button */}
+          <button
+            type="button"
+            onClick={promptInstall}
+            id="desktop-download-app-btn"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200 text-xs font-bold transition-all shadow-xs active:scale-95 group"
+            title="Download Kadalai Mittai Web App"
+          >
+            <Download className="w-3.5 h-3.5 text-brand-700 group-hover:translate-y-0.5 transition-transform" />
+            <span>{isInstalled ? 'App Ready' : 'Download App'}</span>
+          </button>
         </div>
 
         {/* Right Actions: Cart & Profile */}
@@ -180,6 +194,32 @@ const Navbar = () => {
           >
             My Orders & Purchases
           </Link>
+
+          {/* Download Web App Action Button inside Mobile Hamburger Drawer */}
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                promptInstall();
+              }}
+              id="mobile-download-app-btn"
+              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-brand-600 via-brand-700 to-jaggery-800 text-white font-bold text-xs shadow-md active:scale-98 transition-all"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                  <Download className="w-4 h-4 text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="font-bold leading-tight">{isInstalled ? 'App Ready on Device' : 'Download Web App'}</p>
+                  <p className="text-[10px] text-cream-200 font-normal mt-0.5">Install on home screen for 1-tap access</p>
+                </div>
+              </div>
+              <span className="text-[10px] bg-white/25 px-2.5 py-1 rounded-full uppercase tracking-wider font-extrabold shrink-0">
+                INSTALL
+              </span>
+            </button>
+          </div>
 
           <div className="pt-2 border-t border-jaggery-100">
             <button

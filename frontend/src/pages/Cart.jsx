@@ -65,12 +65,12 @@ const Cart = () => {
             return (
               <div
                 key={item.productId}
-                className="bg-white rounded-3xl p-4 sm:p-5 shadow-soft border border-jaggery-100 flex flex-col sm:flex-row items-center gap-4 transition-all"
+                className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-soft border border-jaggery-100 flex flex-row items-center gap-3 sm:gap-4 transition-all"
               >
                 {/* Thumbnail */}
                 <Link
                   to={`/product/${item.productId}`}
-                  className="w-24 h-24 rounded-2xl overflow-hidden bg-cream-200 shrink-0 border border-jaggery-100"
+                  className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl overflow-hidden bg-cream-200 shrink-0 border border-jaggery-100"
                 >
                   <img
                     src={item.image}
@@ -80,68 +80,65 @@ const Cart = () => {
                 </Link>
 
                 {/* Info */}
-                <div className="flex-1 w-full text-center sm:text-left space-y-1">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div className="flex-1 min-w-0 space-y-1">
+                  <div className="flex items-start justify-between gap-1">
                     <Link
                       to={`/product/${item.productId}`}
-                      className="font-serif text-base font-bold text-jaggery-900 hover:text-brand-700 transition-colors"
+                      className="font-serif text-sm sm:text-base font-bold text-jaggery-900 hover:text-brand-700 transition-colors truncate block"
                     >
                       {item.name}
                     </Link>
-                    <span className="text-xs font-bold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-full inline-block sm:self-auto self-center">
+                    <span className="text-[10px] sm:text-xs font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full shrink-0">
                       {item.weight}
                     </span>
                   </div>
 
-                  <p className="text-xs text-jaggery-500">Unit Price: ₹{item.price}</p>
+                  <p className="text-[11px] sm:text-xs text-jaggery-500">₹{item.price} each</p>
 
-                  {/* Quantity formula representation: e.g. Classic Groundnut Candy ₹50 × 2 = ₹100 */}
-                  <div className="pt-2 flex items-center justify-between sm:justify-start gap-4">
-                    {/* Quantity Modifier */}
-                    <div className="inline-flex items-center border border-jaggery-200 rounded-xl bg-cream-50 p-0.5">
+                  {/* Quantity Modifier */}
+                  <div className="pt-1 flex items-center justify-between sm:justify-start gap-2 sm:gap-4">
+                    <div className="inline-flex items-center border border-jaggery-200 rounded-lg sm:rounded-xl bg-cream-50 p-0.5">
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-jaggery-800 hover:bg-white active:scale-95"
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-md sm:rounded-lg flex items-center justify-center text-jaggery-800 hover:bg-white active:scale-95"
                         aria-label="Decrease"
                       >
-                        <Minus className="w-3.5 h-3.5" />
+                        <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </button>
-                      <span className="w-8 text-center text-xs font-bold text-jaggery-900 font-mono">
+                      <span className="w-6 sm:w-8 text-center text-xs font-bold text-jaggery-900 font-mono">
                         {item.quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                         disabled={item.quantity >= (item.stock || 999)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-jaggery-800 hover:bg-white active:scale-95 disabled:opacity-30"
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-md sm:rounded-lg flex items-center justify-center text-jaggery-800 hover:bg-white active:scale-95 disabled:opacity-30"
                         aria-label="Increase"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </button>
                     </div>
 
-                    {/* Formula text */}
-                    <span className="text-xs text-jaggery-600 font-mono">
+                    <span className="text-[11px] sm:text-xs text-jaggery-600 font-mono hidden sm:inline">
                       ₹{item.price} × {item.quantity} = <strong className="text-jaggery-900">₹{itemSubtotal}</strong>
                     </span>
                   </div>
                 </div>
 
                 {/* Subtotal & Delete */}
-                <div className="flex sm:flex-col items-center justify-between w-full sm:w-auto gap-4 sm:items-end">
-                  <div className="text-right">
-                    <span className="text-[11px] text-jaggery-400 block sm:hidden">Total</span>
-                    <span className="text-lg font-black text-jaggery-900 font-mono">₹{itemSubtotal}</span>
-                  </div>
-
+                <div className="flex flex-col items-end justify-between self-stretch shrink-0 pl-1">
                   <button
                     onClick={() => removeFromCart(item.productId)}
-                    className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-all"
+                    className="p-1 sm:p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg sm:rounded-xl transition-all"
                     title="Remove item"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
+
+                  <div className="text-right">
+                    <span className="text-sm sm:text-lg font-black text-jaggery-900 font-mono">₹{itemSubtotal}</span>
+                  </div>
                 </div>
               </div>
             );

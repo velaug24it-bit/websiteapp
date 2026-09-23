@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import MobileBottomNav from '../components/MobileBottomNav';
 import CustomerAuth from '../pages/CustomerAuth';
 import { useAuth } from '../context/AuthContext';
 
@@ -33,12 +34,13 @@ const CustomerLayout = () => {
 
   // Once authenticated, allow access to the main store dashboard and pages
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-jaggery-900 selection:bg-brand-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-jaggery-900 selection:bg-brand-500 selection:text-white pb-16 md:pb-0">
       <Navbar />
       <main className="flex-1">
         <Outlet />
       </main>
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 };

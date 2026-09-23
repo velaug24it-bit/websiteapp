@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { CartProvider } from './context/CartContext';
+import { PwaProvider } from './context/PwaContext';
+import InstallPwaModal from './components/InstallPwaModal';
 
 // Customer Layout & Pages
 import CustomerLayout from './layouts/CustomerLayout';
@@ -34,7 +36,9 @@ function App() {
       <AuthProvider>
         <AdminAuthProvider>
           <CartProvider>
-            <Routes>
+            <PwaProvider>
+              <InstallPwaModal />
+              <Routes>
               {/* Customer Routes */}
               <Route path="/" element={<CustomerLayout />}>
                 <Route index element={<Home />} />
@@ -85,6 +89,7 @@ function App() {
                 }
               />
             </Routes>
+            </PwaProvider>
           </CartProvider>
         </AdminAuthProvider>
       </AuthProvider>

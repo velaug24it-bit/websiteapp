@@ -42,7 +42,7 @@ const Home = () => {
                 <span>Original Kovilpatti Recipe Since 1952</span>
               </div>
 
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold text-jaggery-900 tracking-tight leading-[1.15]">
+              <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-jaggery-900 tracking-tight leading-[1.15]">
                 Traditional Taste. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-500 to-warmOrange">
                   Pure Groundnuts.
@@ -50,41 +50,41 @@ const Home = () => {
                 Made with Love.
               </h1>
 
-              <p className="text-base sm:text-lg text-jaggery-700 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              <p className="text-sm sm:text-lg text-jaggery-700 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                 Authentic Groundnut Candy crafted with quality ingredients and traditional taste. Enjoy the unmatched crunch of fire-roasted peanuts enveloped in rich organic jaggery syrup.
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
                 <Link
                   to="/products"
                   id="hero-shop-now-btn"
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-jaggery-800 hover:from-brand-700 hover:to-jaggery-900 text-white font-bold text-base shadow-warm hover:shadow-glow hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-jaggery-800 hover:from-brand-700 hover:to-jaggery-900 text-white font-bold text-sm sm:text-base shadow-warm hover:shadow-glow transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
-                  <span>Shop Now</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <span>Shop Candies</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
 
                 <Link
                   to="/products"
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border border-jaggery-200 hover:border-brand-400 text-jaggery-900 font-bold text-base hover:bg-cream-100 shadow-soft transition-all duration-200 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-white border border-jaggery-200 hover:border-brand-400 text-jaggery-900 font-bold text-sm sm:text-base hover:bg-cream-100 shadow-soft transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  <span>Explore Products</span>
+                  <span>Explore Packs</span>
                 </Link>
               </div>
 
               {/* Trust badges row */}
-              <div className="pt-6 grid grid-cols-3 gap-4 border-t border-jaggery-200/60 text-left">
+              <div className="pt-4 sm:pt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 border-t border-jaggery-200/60 text-left">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
                   <span className="text-xs font-bold text-jaggery-800">100% Organic Jaggery</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
                   <span className="text-xs font-bold text-jaggery-800">No White Sugar</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
                   <span className="text-xs font-bold text-jaggery-800">Zero Preservatives</span>
                 </div>
               </div>
@@ -208,7 +208,7 @@ const Home = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {[...Array(4)].map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
@@ -218,7 +218,7 @@ const Home = () => {
             <p className="text-jaggery-600 font-medium">No products currently available.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

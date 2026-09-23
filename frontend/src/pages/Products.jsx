@@ -65,17 +65,17 @@ const Products = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 sm:p-5 rounded-3xl shadow-soft border border-jaggery-100 flex flex-col md:flex-row items-center gap-4">
+      <div className="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl shadow-soft border border-jaggery-100 flex flex-col md:flex-row items-center gap-3 sm:gap-4">
         {/* Search Input */}
         <div className="relative w-full md:flex-1">
-          <Search className="w-5 h-5 text-jaggery-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 sm:w-5 sm:h-5 text-jaggery-400 absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             id="product-search-input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search Kadalai Mittai, 100g, 250g, 500g, 1kg..."
-            className="w-full pl-11 pr-10 py-3 rounded-2xl bg-cream-100 border border-jaggery-200 text-sm font-medium text-jaggery-900 placeholder:text-jaggery-400 focus:outline-hidden focus:border-brand-500 focus:bg-white transition-all"
+            placeholder="Search Kadalai Mittai, 100g, 250g, 1kg..."
+            className="w-full pl-10 sm:pl-11 pr-10 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-cream-100 border border-jaggery-200 text-xs sm:text-sm font-medium text-jaggery-900 placeholder:text-jaggery-400 focus:outline-hidden focus:border-brand-500 focus:bg-white transition-all"
           />
           {searchTerm && (
             <button
@@ -87,49 +87,50 @@ const Products = () => {
           )}
         </div>
 
-        {/* Stock Filter */}
-        <div className="w-full md:w-auto flex items-center gap-2">
-          <label className="text-xs font-bold text-jaggery-600 shrink-0">Stock:</label>
-          <select
-            value={stockFilter}
-            id="product-stock-filter"
-            onChange={(e) => setStockFilter(e.target.value)}
-            className="w-full md:w-40 py-3 px-3.5 rounded-2xl bg-cream-100 border border-jaggery-200 text-xs font-semibold text-jaggery-800 focus:outline-hidden focus:border-brand-500"
-          >
-            <option value="all">All Items</option>
-            <option value="in_stock">In Stock Only</option>
-            <option value="out_of_stock">Out of Stock</option>
-          </select>
-        </div>
+        {/* Filters Group for Mobile and Desktop */}
+        <div className="w-full md:w-auto grid grid-cols-2 md:flex items-center gap-2">
+          {/* Stock Filter */}
+          <div className="flex items-center gap-1.5">
+            <select
+              value={stockFilter}
+              id="product-stock-filter"
+              onChange={(e) => setStockFilter(e.target.value)}
+              className="w-full md:w-36 py-2.5 sm:py-3 px-3 rounded-xl sm:rounded-2xl bg-cream-100 border border-jaggery-200 text-[11px] sm:text-xs font-semibold text-jaggery-800 focus:outline-hidden focus:border-brand-500"
+            >
+              <option value="all">📦 All Stock</option>
+              <option value="in_stock">✅ In Stock</option>
+              <option value="out_of_stock">❌ Out of Stock</option>
+            </select>
+          </div>
 
-        {/* Sort Filter */}
-        <div className="w-full md:w-auto flex items-center gap-2">
-          <label className="text-xs font-bold text-jaggery-600 shrink-0">Sort By:</label>
-          <select
-            value={sortOption}
-            id="product-sort-select"
-            onChange={(e) => setSortOption(e.target.value)}
-            className="w-full md:w-44 py-3 px-3.5 rounded-2xl bg-cream-100 border border-jaggery-200 text-xs font-semibold text-jaggery-800 focus:outline-hidden focus:border-brand-500"
-          >
-            <option value="latest">Newest First</option>
-            <option value="price_asc">Price: Low to High</option>
-            <option value="price_desc">Price: High to Low</option>
-            <option value="rating">Highest Rated</option>
-          </select>
+          {/* Sort Filter */}
+          <div className="flex items-center gap-1.5">
+            <select
+              value={sortOption}
+              id="product-sort-select"
+              onChange={(e) => setSortOption(e.target.value)}
+              className="w-full md:w-40 py-2.5 sm:py-3 px-3 rounded-xl sm:rounded-2xl bg-cream-100 border border-jaggery-200 text-[11px] sm:text-xs font-semibold text-jaggery-800 focus:outline-hidden focus:border-brand-500"
+            >
+              <option value="latest">✨ Newest First</option>
+              <option value="price_asc">💰 Price: Low to High</option>
+              <option value="price_desc">💎 Price: High to Low</option>
+              <option value="rating">⭐ Highest Rated</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Product Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {[...Array(4)].map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
         </div>
       ) : products.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-jaggery-200 max-w-md mx-auto space-y-4">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-jaggery-200 max-w-md mx-auto space-y-4">
           <div className="text-4xl">🔍</div>
-          <h3 className="font-serif text-xl font-bold text-jaggery-900">No Candies Found</h3>
+          <h3 className="font-serif text-lg sm:text-xl font-bold text-jaggery-900">No Candies Found</h3>
           <p className="text-xs text-jaggery-600">
             We couldn't find any products matching your search or filters. Try adjusting your keywords.
           </p>
@@ -141,7 +142,7 @@ const Products = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}

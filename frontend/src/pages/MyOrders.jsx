@@ -56,28 +56,28 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       {/* Title */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-jaggery-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-jaggery-200">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-jaggery-900">Track & View Orders</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-jaggery-900">Track & View Orders</h1>
           <p className="text-xs text-jaggery-600 mt-1">
             Real-time status updates for all your handcrafted Groundnut Candy shipments.
           </p>
         </div>
 
         {/* Quick lookup box */}
-        <form onSubmit={handleLookupSubmit} className="flex items-center gap-2">
+        <form onSubmit={handleLookupSubmit} className="flex items-center gap-2 w-full sm:w-auto">
           <input
             type="email"
             placeholder="Search by email..."
             value={lookupEmail}
             onChange={(e) => setLookupEmail(e.target.value)}
-            className="px-3.5 py-2 rounded-xl bg-white border border-jaggery-200 text-xs text-jaggery-900 focus:outline-hidden focus:border-brand-500"
+            className="flex-1 sm:w-60 px-3.5 py-2.5 rounded-xl bg-white border border-jaggery-200 text-xs text-jaggery-900 focus:outline-hidden focus:border-brand-500"
           />
           <button
             type="submit"
-            className="px-4 py-2 rounded-xl bg-jaggery-800 text-white text-xs font-bold hover:bg-jaggery-900 transition-colors shrink-0"
+            className="px-4 py-2.5 rounded-xl bg-jaggery-800 text-white text-xs font-bold hover:bg-jaggery-900 transition-colors shrink-0"
           >
             Find Orders
           </button>

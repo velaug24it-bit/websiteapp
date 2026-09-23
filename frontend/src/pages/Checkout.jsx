@@ -214,36 +214,36 @@ const Checkout = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       {/* Breadcrumb / Title */}
       <div className="flex items-center gap-3">
         <Link to="/cart" className="p-2 rounded-xl bg-cream-200 text-jaggery-800 hover:bg-cream-300">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="font-serif text-3xl font-bold text-jaggery-900">Secure Checkout</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-jaggery-900">Secure Checkout</h1>
           <p className="text-xs text-jaggery-600">Enter delivery address and complete payment via Razorpay.</p>
         </div>
       </div>
 
       {errorMessage && (
-        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold flex items-center gap-3 animate-fadeIn">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold flex items-center gap-3 animate-fadeIn">
           <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
           <span>{errorMessage}</span>
         </div>
       )}
 
-      <form onSubmit={handlePaySecurely} className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <form onSubmit={handlePaySecurely} className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
         {/* Left Columns: Form Fields */}
-        <div className="lg:col-span-8 space-y-8">
+        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
           {/* Customer Information Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-jaggery-100 space-y-5">
-            <h2 className="font-serif text-lg font-bold text-jaggery-900 pb-3 border-b border-jaggery-100 flex items-center gap-2">
-              <span className="w-7 h-7 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-xs font-bold">1</span>
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-soft border border-jaggery-100 space-y-4 sm:space-y-5">
+            <h2 className="font-serif text-base sm:text-lg font-bold text-jaggery-900 pb-3 border-b border-jaggery-100 flex items-center gap-2">
+              <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-xs font-bold">1</span>
               Customer Information
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="sm:col-span-2">
                 <label className="block text-xs font-bold text-jaggery-700 mb-1">Full Name *</label>
                 <input

@@ -298,6 +298,39 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Fixed Bottom Purchase Bar */}
+      <div className="md:hidden fixed bottom-12 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-jaggery-200 px-4 py-2.5 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3">
+        <div>
+          <span className="text-[10px] text-jaggery-500 font-medium block">Total Price</span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-black text-jaggery-900">₹{product.price * quantity}</span>
+            <span className="text-[10px] text-jaggery-400">({quantity} pack)</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            disabled={isOutOfStock}
+            onClick={handleAddToCart}
+            className="py-2.5 px-3.5 rounded-xl bg-cream-200 text-jaggery-900 font-bold text-xs flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>Add</span>
+          </button>
+
+          <button
+            type="button"
+            disabled={isOutOfStock}
+            onClick={handleBuyNow}
+            className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-jaggery-800 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 disabled:opacity-50"
+          >
+            <Zap className="w-3.5 h-3.5 fill-current" />
+            <span>Buy Now</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
