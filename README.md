@@ -174,6 +174,39 @@ npm run dev
 
 ---
 
+## 🌐 Deployment Guide
+
+This full-stack project is pre-configured for seamless deployment on **Netlify** (Frontend) and any Node.js hosting like **Render** or **Railway** (Backend API).
+### 1. Deploy Frontend to Netlify
+1. Log in to [Netlify](https://app.netlify.com) and click **"Add new site" → "Import an existing project"**.
+2. Connect your GitHub account and select your repository: `velaug24it-bit/websiteapp`.
+3. Configure the Build & Deploy settings:
+   - **Base directory**: `frontend` *(already configured via `netlify.toml`)*
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+4. In **Environment variables**, add:
+   - `VITE_API_URL`: Your deployed backend URL + `/api` (e.g. `https://kadalai-candy-api.onrender.com/api` or `http://localhost:5000/api` for testing).
+5. Click **"Deploy site"**. Netlify will build and deploy your store with automatic SPA routing (no 404s on page refresh).
+
+### 2. Deploy Backend to Render (Free Web Service)
+1. Log in to [Render](https://render.com) and select **"New +" → "Web Service"**.
+2. Connect the repository `velaug24it-bit/websiteapp`.
+3. Configure service details:
+   - **Root Directory**: `backend`
+   - **Environment**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `node server.js`
+4. Add the following **Environment Variables** in Render:
+   - `NODE_ENV`: `production`
+   - `MONGODB_URI`: `mongodb+srv://...` (your Atlas connection string)
+   - `JWT_SECRET`: your secret key
+   - `RAZORPAY_KEY_ID`: your Razorpay key ID
+   - `RAZORPAY_KEY_SECRET`: your Razorpay secret
+   - `FRONTEND_URL`: your Netlify URL (e.g. `https://your-site.netlify.app`)
+5. Click **"Create Web Service"**. Once deployed, copy your Render URL and set it as `VITE_API_URL` in Netlify!
+
+---
+
 ## 🧪 Verified End-to-End Customer Flow
 1. **Customer opens store** at `http://localhost:5173/` → explores heritage hero and authentic candies.
 2. **Navigates to `/products`** → selects pack (e.g., 250g Premium Groundnut Candy).
