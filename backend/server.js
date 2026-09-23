@@ -67,12 +67,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
+// API Routes (mounted with /api prefix and also root fallback for deployment resilience)
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/payment', paymentRoutes);
+app.use('/orders', orderRoutes);
+app.use('/admin', adminRoutes);
 
 // Error Handling Middlewares
 app.use(notFound);
