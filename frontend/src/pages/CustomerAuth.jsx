@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Lock,
   Mail,
@@ -321,12 +321,14 @@ const CustomerAuth = ({ defaultTab = 'login', onAuthSuccess }) => {
 
         {/* Admin Link at the very bottom */}
         <div className="text-center mt-6">
-          <a
-            href="/admin/login"
-            className="text-xs text-jaggery-500 hover:text-brand-700 font-medium transition-colors"
+          <Link
+            to="/admin/login"
+            id="auth-go-to-admin-btn"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-900 text-amber-300 hover:bg-slate-800 text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95"
           >
-            Looking for Store Admin Dashboard? Click here →
-          </a>
+            <ShieldCheck className="w-4 h-4 text-amber-400" />
+            <span>Switch to Admin Portal Login →</span>
+          </Link>
         </div>
       </div>
     </div>
