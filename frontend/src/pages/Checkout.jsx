@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lock, ShieldCheck, ArrowLeft, AlertCircle, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
+import { Lock, ShieldCheck, ArrowLeft, AlertCircle, CheckCircle2, CreditCard, Sparkles, Terminal } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { createPaymentOrderApi, verifyPaymentApi } from '../services/api';
 import RazorpayModal from '../components/RazorpayModal';
+import PosCardSwipeModal from '../components/PosCardSwipeModal';
 
 const Checkout = () => {
   const { cartItems, subtotal, deliveryCharge, grandTotal, clearCart } = useCart();
@@ -30,6 +31,8 @@ const Checkout = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [activeRazorpayOrder, setActiveRazorpayOrder] = useState(null);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
+  const [activePosOrder, setActivePosOrder] = useState(null);
+  const [isPosModalOpen, setIsPosModalOpen] = useState(false);
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -163,6 +166,73 @@ const Checkout = () => {
     }
   };
 
+  const handlePayWithPosCardSwipe = async (e) => {
+    if (e) e.preventDefault();
+    setErrorMessage(null);
+
+    // Form validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
+      setErrorMessage('Please enter complete customer details (Name, Phone, Email) for billing.');
+      return;
+    }
+    if (
+      !formData.houseNumber.trim() ||
+      !formData.street.trim() ||
+      !formData.city.trim() ||
+      !formData.pincode.trim()
+    ) {
+      setErrorMessage('Please enter complete delivery address details for the billing invoice.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        paymentMethod: 'debit_card_pos',
+        isPos: true,
+        items: cartItems.map((item) => ({
+          productId: item.productId,
+          productName: item.name,
+          quantity: item.quantity,
+        })),
+        customer: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        shippingAddress: {
+          houseNumber: formData.houseNumber,
+          street: formData.street,
+          area: formData.area,
+          city: formData.city,
+          district: formData.district,
+          state: formData.state,
+          pincode: formData.pincode,
+          landmark: formData.landmark,
+        },
+      };
+
+      const res = await createPaymentOrderApi(payload);
+
+      if (!res.data.success) {
+        setErrorMessage(res.data.message || 'Unable to generate bill.');
+        setLoading(false);
+        return;
+      }
+
+      setActivePosOrder(res.data);
+      setIsPosModalOpen(true);
+      setLoading(false);
+    } catch (err) {
+      console.error('POS order initiation error:', err);
+      setErrorMessage(
+        err.response?.data?.message || 'Unable to generate bill for card payment. Please verify stock.'
+      );
+      setLoading(false);
+    }
+  };
+
   const handlePaymentVerification = async (paymentDetails) => {
     setLoading(true);
     try {
@@ -170,6 +240,9 @@ const Checkout = () => {
         razorpayOrderId: paymentDetails.razorpay_order_id,
         razorpayPaymentId: paymentDetails.razorpay_payment_id,
         razorpaySignature: paymentDetails.razorpay_signature,
+        paymentMethod: paymentDetails.paymentMethod || 'Razorpay Live',
+        isDemo: Boolean(paymentDetails.isDemo),
+        posDetails: paymentDetails.posDetails || null,
         items: cartItems.map((item) => ({
           productId: item.productId,
           productName: item.name,
@@ -197,6 +270,7 @@ const Checkout = () => {
       if (verifyRes.data.success) {
         clearCart();
         setIsSimulatorOpen(false);
+        setIsPosModalOpen(false);
         navigate(`/order-success/${verifyRes.data.order.orderId}`, {
           state: { order: verifyRes.data.order },
         });
@@ -452,43 +526,67 @@ const Checkout = () => {
 
             {/* Payment Action Buttons */}
             <div className="space-y-3 pt-2">
-              {/* 1. Real Live Razorpay Gateway Button */}
+              {/* 1. Debit Card POS Terminal Swipe & Billing (Primary requirement) */}
+              <button
+                type="button"
+                id="pay-pos-debit-card-btn"
+                disabled={loading}
+                onClick={handlePayWithPosCardSwipe}
+                className="w-full py-4 px-4 sm:px-5 rounded-2xl bg-gradient-to-r from-stone-900 via-stone-800 to-emerald-950 hover:from-black hover:to-emerald-900 text-white font-bold text-sm shadow-warm transition-all duration-300 flex items-center justify-between gap-2 active:scale-98 disabled:opacity-50 border border-emerald-500/40 group"
+              >
+                <div className="flex items-center gap-2.5 text-left">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                    <CreditCard className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="leading-tight font-bold text-sm">💳 Bill & Swipe Debit Card</div>
+                    <div className="text-[10px] text-emerald-300 font-normal">
+                      Store POS Terminal • Swipe to Pay
+                    </div>
+                  </div>
+                </div>
+                <span className="font-mono text-xs font-bold bg-emerald-500/25 text-emerald-300 px-2.5 py-1 rounded-xl border border-emerald-500/30 shrink-0">
+                  ₹{grandTotal}
+                </span>
+              </button>
+
+              {/* 2. Real Live Razorpay Gateway Button */}
               <button
                 type="button"
                 id="pay-live-razorpay-btn"
                 disabled={loading}
                 onClick={(e) => handlePaySecurely(e, false)}
-                className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-jaggery-800 hover:from-emerald-800 hover:to-jaggery-900 text-white font-bold text-sm shadow-warm transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50"
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-jaggery-800 hover:from-emerald-800 hover:to-jaggery-900 text-white font-bold text-xs shadow-sm transition-all duration-300 flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50"
               >
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    <Lock className="w-4 h-4" />
-                    <span>Pay with Razorpay (Live Gateway ₹{grandTotal})</span>
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Pay with Razorpay (Live UPI / Netbanking - ₹{grandTotal})</span>
                   </>
                 )}
               </button>
 
-              {/* 2. Instant Demo Sandbox Test Payment Button */}
+              {/* 3. Instant Demo Sandbox Test Payment Button */}
               <button
                 type="button"
                 id="pay-demo-simulator-btn"
                 disabled={loading}
                 onClick={(e) => handlePaySecurely(e, true)}
-                className="w-full py-3.5 px-4 rounded-2xl bg-amber-50 hover:bg-amber-100 text-jaggery-900 border border-brand-300 font-bold text-xs transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50 shadow-xs"
+                className="w-full py-3 px-4 rounded-2xl bg-amber-50 hover:bg-amber-100 text-jaggery-900 border border-brand-300 font-bold text-xs transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50 shadow-xs"
               >
-                <Sparkles className="w-4 h-4 text-warmOrange" />
+                <Sparkles className="w-3.5 h-3.5 text-warmOrange" />
                 <span>⚡ Demo Test Pay (Instant Sandbox Test - ₹{grandTotal})</span>
               </button>
 
               <div className="text-center space-y-1 pt-1">
                 <p className="text-[11px] text-jaggery-600 flex items-center justify-center gap-1 font-semibold">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  Live Razorpay 256-Bit SSL Encrypted
+                  Live Razorpay 256-Bit SSL Encrypted & EMV Card Terminal
                 </p>
                 <p className="text-[10px] text-jaggery-400">
-                  Choose Live Gateway to pay real funds, or Demo Test Pay for instant sandbox testing.
+                  Select Debit Card to bill & swipe on the POS machine, or Demo Test Pay for instant sandbox testing.
                 </p>
               </div>
             </div>
@@ -505,6 +603,34 @@ const Checkout = () => {
         onFailure={(msg) => {
           setIsSimulatorOpen(false);
           setErrorMessage(msg);
+        }}
+      />
+
+      {/* Debit Card POS Terminal Swipe Machine Modal */}
+      <PosCardSwipeModal
+        isOpen={isPosModalOpen}
+        onClose={() => setIsPosModalOpen(false)}
+        orderData={activePosOrder}
+        customerInfo={{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          shippingAddress: {
+            houseNumber: formData.houseNumber,
+            street: formData.street,
+            area: formData.area,
+            city: formData.city,
+            district: formData.district,
+            state: formData.state,
+            pincode: formData.pincode,
+            landmark: formData.landmark,
+          },
+        }}
+        cartItems={cartItems}
+        onSuccess={handlePaymentVerification}
+        onFailure={(msg) => {
+          setIsPosModalOpen(false);
+          setErrorMessage(msg || 'Debit Card transaction was cancelled.');
         }}
       />
     </div>

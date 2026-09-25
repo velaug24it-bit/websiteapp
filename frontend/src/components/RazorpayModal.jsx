@@ -20,6 +20,8 @@ const RazorpayModal = ({ isOpen, onClose, orderData, onSuccess, onFailure }) => 
           razorpay_order_id: orderData.razorpayOrderId,
           razorpay_payment_id: paymentId,
           razorpay_signature: `sim_sig_${Date.now()}`,
+          paymentMethod: `Demo Sandbox (${method.toUpperCase()})`,
+          isDemo: true,
         });
       } else {
         onFailure('Payment was cancelled or failed by bank.');

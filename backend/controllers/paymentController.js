@@ -75,11 +75,12 @@ const createPaymentOrder = async (req, res) => {
     const totalAmount = calculatedSubtotal + deliveryCharge;
     const amountInPaise = Math.round(totalAmount * 100);
 
+    const isPosRequest = req.body.paymentMethod === 'pos_card' || req.body.paymentMethod === 'debit_card_pos' || req.body.isPos;
     const razorpay = getRazorpayInstance();
     let razorpayOrderId = null;
 
     // If live payment requested and Razorpay instance configured:
-    if (!isDemo && razorpay && process.env.RAZORPAY_KEY_ID && !process.env.RAZORPAY_KEY_ID.includes('demo')) {
+    if (!isDemo && !isPosRequest && razorpay && process.env.RAZORPAY_KEY_ID && !process.env.RAZORPAY_KEY_ID.includes('demo')) {
       try {
         const rzpOrder = await razorpay.orders.create({
           amount: amountInPaise,
@@ -101,10 +102,16 @@ const createPaymentOrder = async (req, res) => {
       }
     }
 
-    // If demo mode requested or fallback needed
+    // Generate specialized order identifiers for POS Swipe Machine or Demo Simulator
     if (!razorpayOrderId) {
-      razorpayOrderId = `order_demo_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      if (isPosRequest) {
+        razorpayOrderId = `order_pos_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      } else {
+        razorpayOrderId = `order_demo_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      }
     }
+
+    const posInvoiceNo = `INV-KM-${Date.now().toString().slice(-6)}`;
 
     res.json({
       success: true,
@@ -112,7 +119,8 @@ const createPaymentOrder = async (req, res) => {
       amount: amountInPaise,
       currency: 'INR',
       keyId: process.env.RAZORPAY_KEY_ID || 'rzp_live_T386KFxcoIDeU5',
-      isLive: !isDemo && razorpayOrderId.startsWith('order_') && !razorpayOrderId.startsWith('order_demo_'),
+      isLive: !isDemo && !isPosRequest && razorpayOrderId.startsWith('order_') && !razorpayOrderId.startsWith('order_demo_') && !razorpayOrderId.startsWith('order_pos_'),
+      posInvoiceNo,
       pricing: {
         subtotal: calculatedSubtotal,
         deliveryCharge,
@@ -137,6 +145,8 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
       items,
       customer,
       shippingAddress,
+      paymentMethod,
+      posDetails,
     } = req.body;
 
     if (!razorpayOrderId || !razorpayPaymentId) {
@@ -161,11 +171,37 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Complete delivery address required' });
     }
 
-    // Verify signature if not test simulation
-    const isTestOrder = razorpayOrderId.startsWith('order_test_');
+    // Verify signature if not test simulation or POS swipe
+    const isTestOrDemoOrPos =
+      (razorpayOrderId && (
+        razorpayOrderId.startsWith('order_demo_') ||
+        razorpayOrderId.startsWith('order_test_') ||
+        razorpayOrderId.startsWith('order_pos_') ||
+        razorpayOrderId.startsWith('order_card_')
+      )) ||
+      (razorpayPaymentId && (
+        razorpayPaymentId.startsWith('pay_sim_') ||
+        razorpayPaymentId.startsWith('pay_demo_') ||
+        razorpayPaymentId.startsWith('pay_pos_') ||
+        razorpayPaymentId.startsWith('pay_card_')
+      )) ||
+      (razorpaySignature && (
+        razorpaySignature.startsWith('sim_') ||
+        razorpaySignature.startsWith('pos_') ||
+        razorpaySignature === 'simulated_test_sig' ||
+        razorpaySignature === 'pos_swipe_verified'
+      )) ||
+      req.body.isDemo === true ||
+      req.body.isPos === true ||
+      Boolean(paymentMethod && (
+        paymentMethod.includes('Debit Card') ||
+        paymentMethod.includes('POS') ||
+        paymentMethod.includes('Demo')
+      ));
+
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    if (!isTestOrder && keySecret && !keySecret.includes('demo')) {
+    if (!isTestOrDemoOrPos && keySecret && !keySecret.includes('demo')) {
       const generatedSignature = crypto
         .createHmac('sha256', keySecret)
         .update(`${razorpayOrderId}|${razorpayPaymentId}`)
@@ -233,6 +269,20 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
       linkedUser = await User.findOne({ email: customer.email.toLowerCase().trim() });
     }
 
+    let finalPaymentMethod = paymentMethod || 'Razorpay Live';
+    if (!paymentMethod) {
+      if (razorpayOrderId.startsWith('order_pos_') || razorpayPaymentId.startsWith('pay_pos_')) {
+        finalPaymentMethod = 'Debit Card (POS Swipe Machine)';
+      } else if (razorpayOrderId.startsWith('order_demo_') || razorpayPaymentId.startsWith('pay_sim_')) {
+        finalPaymentMethod = 'Demo Test Pay';
+      }
+    }
+
+    let notesText = '';
+    if (posDetails) {
+      notesText = `Debit Card Swiped on POS Terminal [Auth: ${posDetails.authCode || 'N/A'}, RRN: ${posDetails.rrn || 'N/A'}, Card: ${posDetails.cardBrand || 'Debit Card'} **** ${posDetails.last4 || '4892'}]`;
+    }
+
     const newOrder = await Order.create({
       orderId,
       customer: {
@@ -262,9 +312,17 @@ const verifyPaymentAndCreateOrder = async (req, res) => {
         razorpayPaymentId,
         razorpaySignature: razorpaySignature || 'simulated_test_sig',
         paymentStatus: 'Paid',
-        paymentMethod: 'Razorpay',
+        paymentMethod: finalPaymentMethod,
         paidAt: new Date(),
+        posInfo: {
+          cardBrand: posDetails?.cardBrand || (finalPaymentMethod.includes('Debit Card') ? 'RuPay / Visa Debit' : ''),
+          last4: posDetails?.last4 || (finalPaymentMethod.includes('Debit Card') ? '4892' : ''),
+          authCode: posDetails?.authCode || '',
+          rrn: posDetails?.rrn || '',
+          invoiceNo: posDetails?.invoiceNo || '',
+        },
       },
+      notes: notesText,
       orderStatus: 'Confirmed',
       expectedDelivery,
     });

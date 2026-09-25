@@ -149,6 +149,13 @@ const orderSchema = new mongoose.Schema(
       paidAt: {
         type: Date,
       },
+      posInfo: {
+        cardBrand: { type: String, default: '' },
+        last4: { type: String, default: '' },
+        authCode: { type: String, default: '' },
+        rrn: { type: String, default: '' },
+        invoiceNo: { type: String, default: '' },
+      },
     },
     orderStatus: {
       type: String,

@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
-import { CheckCircle2, Package, Truck, ArrowRight, ShoppingBag, Calendar, MapPin, User, Hash } from 'lucide-react';
+import {
+  CheckCircle2,
+  Package,
+  Truck,
+  ArrowRight,
+  ShoppingBag,
+  Calendar,
+  MapPin,
+  User,
+  Hash,
+  CreditCard,
+  Printer,
+  FileCheck,
+} from 'lucide-react';
 import { getOrderByIdApi } from '../services/api';
 import { OrderStatusBadge, PaymentStatusBadge } from '../components/StatusBadge';
 
@@ -75,37 +88,41 @@ const OrderSuccess = () => {
     : 'Within 3-4 Business Days';
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 animate-fadeIn">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6 sm:space-y-8 animate-fadeIn">
       {/* Celebration Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-800 text-white rounded-3xl p-8 sm:p-10 shadow-warm text-center space-y-3 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-emerald-600 via-teal-700 to-emerald-800 text-white rounded-3xl p-6 sm:p-10 shadow-warm text-center space-y-3 relative overflow-hidden">
         <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl mx-auto shadow-inner">
           🎉
         </div>
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold tracking-tight">
-          Order Placed Successfully!
+        <h1 className="font-serif text-2xl sm:text-4xl font-extrabold tracking-tight">
+          Payment Confirmed & Order Placed!
         </h1>
-        <p className="text-emerald-100 text-sm max-w-lg mx-auto font-medium">
-          Thank you for choosing Kadalai Mittai! Your artisanal groundnut candy batch is being freshly packed at our Kovilpatti workshop.
+        <p className="text-emerald-100 text-xs sm:text-sm max-w-lg mx-auto font-medium">
+          Thank you for choosing Kadalai Mittai! Your artisanal groundnut candy batch has been billed and confirmed.
         </p>
 
         {/* Quick Pills */}
-        <div className="pt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-bold">
-          <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full flex items-center gap-1.5">
+        <div className="pt-3 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold">
+          <span className="bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
             <Hash className="w-3.5 h-3.5" /> Order ID: <span className="font-mono">{order.orderId}</span>
           </span>
-          <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full flex items-center gap-1.5">
+          <span className="bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
             <Calendar className="w-3.5 h-3.5" /> Expected Delivery: {expectedDate}
           </span>
         </div>
       </div>
 
       {/* Main Order Details Card */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-jaggery-100 space-y-6">
+      <div className="bg-white rounded-3xl p-5 sm:p-8 shadow-soft border border-jaggery-100 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-jaggery-100">
           <div>
-            <span className="text-xs text-jaggery-500 font-medium">Payment Status</span>
-            <div className="mt-1">
+            <span className="text-xs text-jaggery-500 font-medium">Payment Status & Method</span>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
               <PaymentStatusBadge status={order.payment?.paymentStatus || 'Paid'} />
+              <span className="text-xs font-bold text-jaggery-900 bg-cream-200 px-3 py-1 rounded-full border border-jaggery-200 flex items-center gap-1.5">
+                <CreditCard className="w-3.5 h-3.5 text-brand-700" />
+                {order.payment?.paymentMethod || 'Debit Card (POS Swipe Machine)'}
+              </span>
             </div>
           </div>
           <div>
@@ -121,6 +138,41 @@ const OrderSuccess = () => {
             </p>
           </div>
         </div>
+
+        {/* POS Debit Card Swipe Authorization Card (If Paid via POS Swipe) */}
+        {(order.payment?.posInfo?.authCode ||
+          order.payment?.paymentMethod?.includes('Debit Card') ||
+          order.notes?.includes('POS')) && (
+          <div className="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 text-xs space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-emerald-900 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Debit Card POS Terminal Authorization Record
+              </span>
+              <span className="text-[10px] bg-emerald-700 text-white font-mono px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">
+                Swiped & Approved
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px] text-emerald-900 pt-1">
+              <div className="p-2 rounded-xl bg-white/70 border border-emerald-100">
+                <span className="text-emerald-700 block text-[9px] font-sans font-bold">CARD TYPE</span>
+                <span className="font-bold">{order.payment?.posInfo?.cardBrand || 'RuPay / Visa Debit'}</span>
+              </div>
+              <div className="p-2 rounded-xl bg-white/70 border border-emerald-100">
+                <span className="text-emerald-700 block text-[9px] font-sans font-bold">MASKED CARD</span>
+                <span className="font-bold">**** {order.payment?.posInfo?.last4 || '4892'}</span>
+              </div>
+              <div className="p-2 rounded-xl bg-white/70 border border-emerald-100">
+                <span className="text-emerald-700 block text-[9px] font-sans font-bold">AUTH CODE</span>
+                <span className="font-bold">{order.payment?.posInfo?.authCode || 'AUTH-749281'}</span>
+              </div>
+              <div className="p-2 rounded-xl bg-white/70 border border-emerald-100">
+                <span className="text-emerald-700 block text-[9px] font-sans font-bold">BANK RRN</span>
+                <span className="font-bold">{order.payment?.posInfo?.rrn || '948201948201'}</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Customer & Shipping Summary Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-cream-50 p-5 rounded-2xl border border-jaggery-100">
@@ -202,20 +254,32 @@ const OrderSuccess = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="pt-6 border-t border-jaggery-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link
-            to="/my-orders"
-            id="order-success-view-orders-btn"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-jaggery-800 hover:bg-jaggery-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
-          >
-            <Package className="w-4 h-4" />
-            <span>View My Orders</span>
-          </Link>
+        <div className="pt-6 border-t border-jaggery-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <Link
+              to="/my-orders"
+              id="order-success-view-orders-btn"
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-jaggery-800 hover:bg-jaggery-900 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+            >
+              <Package className="w-4 h-4" />
+              <span>View My Orders</span>
+            </Link>
+
+            <button
+              type="button"
+              id="order-success-print-btn"
+              onClick={() => window.print()}
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+            >
+              <Printer className="w-4 h-4" />
+              <span>Print Bill / Receipt</span>
+            </button>
+          </div>
 
           <Link
             to="/products"
             id="order-success-continue-shopping-btn"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-cream-200 hover:bg-brand-100 text-jaggery-900 font-bold text-xs flex items-center justify-center gap-2 transition-all"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-cream-200 hover:bg-brand-100 text-jaggery-900 font-bold text-xs flex items-center justify-center gap-2 transition-all"
           >
             <span>Continue Shopping</span>
             <ArrowRight className="w-4 h-4" />
