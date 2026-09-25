@@ -38,6 +38,8 @@ export const getProductByIdApi = (id) => api.get(`/products/${id}`);
 // Payment & Checkout APIs
 export const createPaymentOrderApi = (data) => api.post('/payment/create-order', data);
 export const verifyPaymentApi = (data) => api.post('/payment/verify', data);
+export const pushPosOrderApi = (data) => api.post('/payment/pos/push', data);
+export const getPosOrderStatusApi = (orderId) => api.get(`/payment/pos/status/${orderId}`);
 
 // Orders APIs
 export const getMyOrdersApi = (params) => api.get('/orders/my-orders', { params });
