@@ -24,7 +24,7 @@ const connectDB = async () => {
         console.error(` Local fallback failed: ${localErr.message}`);
       }
     }
-    process.exit(1);
+    console.warn('⚠️ Running server in resilient mode; MongoDB will continue attempting connection in the background.');
   }
 };
 
