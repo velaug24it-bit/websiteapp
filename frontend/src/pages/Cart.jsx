@@ -13,6 +13,7 @@ const Cart = () => {
     deliveryCharge,
     grandTotal,
     totalCount,
+    cartUserEmail,
   } = useCart();
 
   const navigate = useNavigate();
@@ -24,6 +25,11 @@ const Cart = () => {
           🛒
         </div>
         <h1 className="font-serif text-3xl font-bold text-jaggery-900">Your Shopping Cart is Empty</h1>
+        {cartUserEmail && (
+          <p className="text-xs font-medium text-brand-700">
+            Active Cart for: <span className="font-bold underline">{cartUserEmail}</span>
+          </p>
+        )}
         <p className="text-sm text-jaggery-600 max-w-sm mx-auto">
           You haven't added any crunchy Kadalai Mittai to your cart yet. Explore our handcrafted packs!
         </p>
@@ -47,7 +53,14 @@ const Cart = () => {
       <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-6 border-b border-jaggery-200">
         <div>
           <h1 className="font-serif text-3xl font-bold text-jaggery-900">Shopping Cart</h1>
-          <p className="text-xs text-jaggery-600 mt-1">Review your selected Kadalai Mittai packs and quantities.</p>
+          <div className="flex flex-wrap items-center gap-2 mt-1">
+            <p className="text-xs text-jaggery-600">Review your selected Kadalai Mittai packs and quantities.</p>
+            {cartUserEmail && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-50 text-brand-800 border border-brand-200">
+                👤 Account: {cartUserEmail}
+              </span>
+            )}
+          </div>
         </div>
         <button
           onClick={clearCart}

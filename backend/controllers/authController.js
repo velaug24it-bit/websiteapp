@@ -98,6 +98,37 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// Customer Cart - Get User Cart
+// GET /api/auth/cart
+const getUserCart = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('cart');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.json({ success: true, cart: user.cart || [] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Customer Cart - Update User Cart
+// PUT /api/auth/cart
+const updateUserCart = async (req, res) => {
+  try {
+    const { cart } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    user.cart = Array.isArray(cart) ? cart : [];
+    await user.save();
+    res.json({ success: true, cart: user.cart });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Admin Login
 // POST /api/admin/login
 const adminLogin = async (req, res) => {
@@ -327,6 +358,8 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  getUserCart,
+  updateUserCart,
   adminLogin,
   getAdminProfile,
   updateAdminProfile,

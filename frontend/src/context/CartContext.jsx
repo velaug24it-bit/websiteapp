@@ -1,20 +1,106 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { useAuth } from './AuthContext';
+import { getUserCartApi, updateUserCartApi } from '../services/api';
 
 const CartContext = createContext();
 
+// Generate isolated storage key for each email or guest
+const getStorageKey = (email) => {
+  if (email) {
+    return `kadalai_cart_${email.toLowerCase().trim()}`;
+  }
+  return 'kadalai_cart_guest';
+};
+
 export const CartProvider = ({ children }) => {
+  const { user, token } = useAuth();
+  const currentEmail = user?.email ? user.email.toLowerCase().trim() : null;
+
+  // Active storage key ref to prevent race condition saves across user switches
+  const activeKeyRef = useRef(getStorageKey(currentEmail));
+  const isLoadedRef = useRef(false);
+
+  // Initialize from current user's local key
   const [cartItems, setCartItems] = useState(() => {
+    // Purge old un-namespaced shared cart key if it still exists
     try {
-      const saved = localStorage.getItem('kadalai_cart');
+      if (localStorage.getItem('kadalai_cart')) {
+        localStorage.removeItem('kadalai_cart');
+      }
+    } catch {}
+
+    try {
+      const key = getStorageKey(currentEmail);
+      const saved = localStorage.getItem(key);
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
 
+  // Whenever the logged-in email changes (e.g., login, switch account, logout)
   useEffect(() => {
-    localStorage.setItem('kadalai_cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const newKey = getStorageKey(currentEmail);
+    activeKeyRef.current = newKey;
+    isLoadedRef.current = false;
+
+    // Load cart specific to this user from local storage
+    let localItems = [];
+    try {
+      const saved = localStorage.getItem(newKey);
+      if (saved) localItems = JSON.parse(saved);
+    } catch (err) {
+      console.error('Error reading cart from localStorage for', newKey, err);
+      localItems = [];
+    }
+
+    setCartItems(localItems);
+    isLoadedRef.current = true;
+
+    // If logged in, also sync with remote MongoDB user document
+    if (currentEmail && token) {
+      getUserCartApi()
+        .then((res) => {
+          if (res.data?.success && Array.isArray(res.data.cart)) {
+            const dbCart = res.data.cart;
+            // If local storage is empty for this user but DB has saved cart, restore it
+            if (localItems.length === 0 && dbCart.length > 0) {
+              setCartItems(dbCart);
+              localStorage.setItem(newKey, JSON.stringify(dbCart));
+            } else if (localItems.length > 0) {
+              // Sync local items to server
+              updateUserCartApi(localItems).catch(() => {});
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn('Could not sync user cart from server:', err.message);
+        });
+    }
+  }, [currentEmail, token]);
+
+  // Persist cartItems to the current user's key whenever cartItems changes
+  useEffect(() => {
+    if (!isLoadedRef.current) return;
+    const key = activeKeyRef.current;
+    if (key) {
+      try {
+        localStorage.setItem(key, JSON.stringify(cartItems));
+      } catch (err) {
+        console.error('Failed to save cart to localStorage:', err);
+      }
+
+      // If user is authenticated, sync with server (debounced)
+      if (currentEmail && token) {
+        const timeoutId = setTimeout(() => {
+          updateUserCartApi(cartItems).catch((err) => {
+            console.warn('Failed to sync cart to server:', err.message);
+          });
+        }, 500);
+        return () => clearTimeout(timeoutId);
+      }
+    }
+  }, [cartItems, currentEmail, token]);
 
   const addToCart = (product, quantity = 1) => {
     const qtyToAdd = Math.max(1, Number(quantity));
@@ -107,7 +193,15 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCartItems([]);
-    localStorage.removeItem('kadalai_cart');
+    const key = activeKeyRef.current;
+    if (key) {
+      try {
+        localStorage.removeItem(key);
+      } catch {}
+    }
+    if (currentEmail && token) {
+      updateUserCartApi([]).catch(() => {});
+    }
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -127,6 +221,7 @@ export const CartProvider = ({ children }) => {
         deliveryCharge,
         grandTotal,
         totalCount,
+        cartUserEmail: currentEmail,
       }}
     >
       {children}

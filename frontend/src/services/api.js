@@ -32,6 +32,8 @@ export const loginApi = (data) => api.post('/auth/login', data);
 export const getProfileApi = () => api.get('/auth/profile');
 export const forgotPasswordApi = (data) => api.post('/auth/forgot-password', data);
 export const resetPasswordApi = (data) => api.post('/auth/reset-password', data);
+export const getUserCartApi = () => api.get('/auth/cart');
+export const updateUserCartApi = (cart) => api.put('/auth/cart', { cart });
 
 // Product APIs
 export const getProductsApi = (params) => api.get('/products', { params });
