@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const Admin = require('../models/Admin');
 const generateToken = require('../utils/generateToken');
+const { sendPasswordResetEmail } = require('../utils/sendEmail');
 
 // Customer Register
 // POST /api/auth/register
@@ -216,14 +217,24 @@ const forgotPassword = async (req, res) => {
     account.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes validity
     await account.save();
 
-    console.log(`[Password Reset] 🔑 Verification code for ${cleanEmail}: ${resetOtp} (Expires in 15 mins)`);
+    // Send verification code to email
+    try {
+      await sendPasswordResetEmail({
+        to: cleanEmail,
+        resetOtp,
+        userName: account.name || (accountType === 'admin' ? 'Administrator' : 'Valued Customer'),
+      });
+      console.log(`[Password Reset] ✉️ Verification code sent to ${cleanEmail}`);
+    } catch (emailErr) {
+      console.error('[Password Reset] ⚠️ Failed to deliver email:', emailErr.message);
+      // We still log for admin audit, but do not leak token to the frontend response
+    }
 
     res.json({
       success: true,
-      message: `A 6-digit verification code has been generated for ${cleanEmail}.`,
+      message: `A 6-digit verification code has been sent to ${cleanEmail}. Please check your inbox.`,
       email: cleanEmail,
       accountType,
-      resetCode: resetOtp, // Included so user/cashier can immediately test or use demo code without external email blockers
     });
   } catch (error) {
     console.error('Error in forgotPassword:', error);

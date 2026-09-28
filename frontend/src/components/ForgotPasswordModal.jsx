@@ -34,7 +34,6 @@ const ForgotPasswordModal = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successInfo, setSuccessInfo] = useState(null);
-  const [demoCode, setDemoCode] = useState(null);
   const [resendCooldown, setResendCooldown] = useState(0);
 
   // Sync initialEmail when opened
@@ -42,7 +41,6 @@ const ForgotPasswordModal = ({
     if (isOpen) {
       if (initialEmail) setEmail(initialEmail);
       setError(null);
-      setDemoCode(null);
     } else {
       // Reset state on close
       setStep('email');
@@ -50,7 +48,6 @@ const ForgotPasswordModal = ({
       setNewPassword('');
       setConfirmPassword('');
       setError(null);
-      setDemoCode(null);
     }
   }, [isOpen, initialEmail]);
 
@@ -64,7 +61,7 @@ const ForgotPasswordModal = ({
 
   if (!isOpen) return null;
 
-  // Handle Step 1: Send OTP
+  // Handle Step 1: Send OTP to Email
   const handleSendCode = async (e) => {
     if (e) e.preventDefault();
     setError(null);
@@ -79,15 +76,11 @@ const ForgotPasswordModal = ({
     try {
       const res = await forgotPasswordApi({ email: cleanEmail });
       if (res.data?.success) {
-        setDemoCode(res.data.resetCode || null);
-        if (res.data.resetCode) {
-          // Pre-fill OTP automatically for seamless user experience
-          setOtp(res.data.resetCode);
-        }
+        setOtp('');
         setStep('otp_password');
         setResendCooldown(30);
       } else {
-        setError(res.data?.message || 'Failed to generate reset code.');
+        setError(res.data?.message || 'Failed to send reset code.');
       }
     } catch (err) {
       console.error('Forgot password error:', err);
@@ -310,24 +303,19 @@ const ForgotPasswordModal = ({
                 </button>
               </div>
 
-              {/* Demo Code Auto-Helper */}
-              {demoCode && (
-                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 shrink-0" />
-                    <span>
-                      Generated Code: <strong>{demoCode}</strong>
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setOtp(demoCode)}
-                    className="font-bold underline text-[11px] hover:text-amber-400"
-                  >
-                    Auto-Fill
-                  </button>
-                </div>
-              )}
+              {/* Email Sent Notification Box */}
+              <div
+                className={`p-3.5 rounded-2xl flex items-center gap-3 text-xs border ${
+                  isDark
+                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+                    : 'bg-brand-50 border-brand-200 text-brand-900'
+                }`}
+              >
+                <Mail className="w-5 h-5 text-brand-600 shrink-0" />
+                <p className="leading-relaxed">
+                  A 6-digit verification code has been sent to your email. Please check your inbox (and spam folder) and enter it below.
+                </p>
+              </div>
 
               {/* 6-Digit OTP */}
               <div>
