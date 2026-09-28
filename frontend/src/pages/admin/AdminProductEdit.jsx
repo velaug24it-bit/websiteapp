@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { getProductByIdApi, updateAdminProductApi } from '../../services/api';
+import ImageUploadInput from '../../components/ImageUploadInput';
 
 const AdminProductEdit = () => {
   const { id } = useParams();
@@ -231,16 +232,13 @@ const AdminProductEdit = () => {
             </label>
           </div>
 
-          {/* Image */}
+          {/* Product Image (Upload from Computer or URL/Path) */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-bold text-slate-300 mb-1">Image URL *</label>
-            <input
-              type="url"
-              name="image"
-              required
+            <ImageUploadInput
               value={formData.image}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-mono text-white focus:outline-hidden focus:border-amber-500"
+              onChange={(val) => setFormData((prev) => ({ ...prev, image: val }))}
+              label="Product Image"
+              required
             />
           </div>
         </div>

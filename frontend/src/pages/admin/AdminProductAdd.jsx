@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Save, AlertCircle, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import { createAdminProductApi } from '../../services/api';
+import ImageUploadInput from '../../components/ImageUploadInput';
 
 const IMAGE_PRESETS = [
   { label: 'Classic Crunchy Squares', url: '/images/products/classic_groundnut_candy.jpg' },
@@ -199,39 +200,15 @@ const AdminProductAdd = () => {
             </label>
           </div>
 
-          {/* Product Image URL with Presets */}
-          <div className="sm:col-span-2 space-y-3">
-            <label className="block text-xs font-bold text-slate-300">Product Image URL *</label>
-            <input
-              type="url"
-              name="image"
-              required
+          {/* Product Image (Upload from Computer or URL/Presets) */}
+          <div className="sm:col-span-2">
+            <ImageUploadInput
               value={formData.image}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-mono text-white focus:outline-hidden focus:border-amber-500"
+              onChange={(val) => setFormData((prev) => ({ ...prev, image: val }))}
+              label="Product Image"
+              required
+              presets={IMAGE_PRESETS}
             />
-
-            {/* Presets */}
-            <div>
-              <p className="text-[11px] text-slate-400 mb-2">Or choose a high-resolution preset photography:</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {IMAGE_PRESETS.map((preset, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setFormData((p) => ({ ...p, image: preset.url }))}
-                    className={`p-2 rounded-xl border text-left flex items-center gap-2 transition-all ${
-                      formData.image === preset.url
-                        ? 'border-amber-500 bg-amber-500/10 text-amber-300'
-                        : 'border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700'
-                    }`}
-                  >
-                    <img src={preset.url} alt="" className="w-8 h-8 rounded-lg object-cover" />
-                    <span className="text-[10px] font-bold line-clamp-1">{preset.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 
