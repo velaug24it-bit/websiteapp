@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const User = require('../models/User');
 const Admin = require('../models/Admin');
 const generateToken = require('../utils/generateToken');
@@ -177,6 +178,140 @@ const updateAdminProfile = async (req, res) => {
   }
 };
 
+// Request Password Reset Code
+// POST /api/auth/forgot-password
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Please enter your email address' });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Check customer accounts first, then admin accounts
+    let account = await User.findOne({ email: cleanEmail });
+    let accountType = 'customer';
+
+    if (!account) {
+      account = await Admin.findOne({ email: cleanEmail });
+      accountType = 'admin';
+    }
+
+    if (!account) {
+      return res.status(404).json({
+        success: false,
+        message: 'No registered account found with this email address. Please check spelling or create an account.',
+      });
+    }
+
+    // Generate 6-digit verification code
+    const resetOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Hash token before storing in database
+    const hashedToken = crypto.createHash('sha256').update(resetOtp).digest('hex');
+
+    account.resetPasswordToken = hashedToken;
+    account.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes validity
+    await account.save();
+
+    console.log(`[Password Reset] 🔑 Verification code for ${cleanEmail}: ${resetOtp} (Expires in 15 mins)`);
+
+    res.json({
+      success: true,
+      message: `A 6-digit verification code has been generated for ${cleanEmail}.`,
+      email: cleanEmail,
+      accountType,
+      resetCode: resetOtp, // Included so user/cashier can immediately test or use demo code without external email blockers
+    });
+  } catch (error) {
+    console.error('Error in forgotPassword:', error);
+    res.status(500).json({ success: false, message: error.message || 'Unable to process password reset request.' });
+  }
+};
+
+// Verify Code and Set New Password
+// POST /api/auth/reset-password
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email, 6-digit verification code, and new password.',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long.',
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.toString().trim();
+    const hashedToken = crypto.createHash('sha256').update(cleanOtp).digest('hex');
+
+    // Search in User collection
+    let account = await User.findOne({
+      email: cleanEmail,
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+    let accountType = 'customer';
+
+    // If not found in User, search in Admin
+    if (!account) {
+      account = await Admin.findOne({
+        email: cleanEmail,
+        resetPasswordToken: hashedToken,
+        resetPasswordExpire: { $gt: Date.now() },
+      });
+      accountType = 'admin';
+    }
+
+    if (!account) {
+      const existing = (await User.findOne({ email: cleanEmail })) || (await Admin.findOne({ email: cleanEmail }));
+      if (!existing) {
+        return res.status(404).json({ success: false, message: 'Account not found with this email.' });
+      }
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired verification code. Please request a new code.',
+      });
+    }
+
+    // Set new password (pre-save hook will hash it with bcrypt)
+    account.password = newPassword;
+    account.resetPasswordToken = null;
+    account.resetPasswordExpire = null;
+    await account.save();
+
+    console.log(`[Password Reset] ✅ Password successfully updated for ${cleanEmail} (${accountType})`);
+
+    const token = generateToken({ id: account._id, role: account.role || accountType });
+
+    res.json({
+      success: true,
+      message: 'Your password has been reset successfully! You can now log in.',
+      token,
+      accountType,
+      user: {
+        id: account._id,
+        name: account.name,
+        email: account.email,
+        role: account.role || accountType,
+      },
+    });
+  } catch (error) {
+    console.error('Error in resetPassword:', error);
+    res.status(500).json({ success: false, message: error.message || 'Failed to reset password.' });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -184,4 +319,6 @@ module.exports = {
   adminLogin,
   getAdminProfile,
   updateAdminProfile,
+  forgotPassword,
+  resetPassword,
 };

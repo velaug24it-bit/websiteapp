@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showForgotModal, setShowForgotModal] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -71,7 +73,17 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-jaggery-700 mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-bold text-jaggery-700">Password</label>
+              <button
+                type="button"
+                id="login-forgot-password-link"
+                onClick={() => setShowForgotModal(true)}
+                className="text-xs font-semibold text-brand-600 hover:text-brand-800 hover:underline transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 text-jaggery-400 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
@@ -122,6 +134,17 @@ const Login = () => {
           </Link>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={showForgotModal}
+        onClose={() => setShowForgotModal(false)}
+        initialEmail={email}
+        onSuccess={({ email: resetEmail, newPassword }) => {
+          setEmail(resetEmail);
+          setPassword(newPassword);
+        }}
+      />
     </div>
   );
 };

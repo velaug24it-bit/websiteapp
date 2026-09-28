@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, KeyRound, Sparkles } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showForgotModal, setShowForgotModal] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { login, isAdminAuthenticated } = useAdminAuth();
@@ -84,7 +86,17 @@ const AdminLogin = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1">Admin Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-bold text-slate-300">Admin Password</label>
+              <button
+                type="button"
+                id="admin-forgot-password-link"
+                onClick={() => setShowForgotModal(true)}
+                className="text-xs font-semibold text-amber-400 hover:text-amber-300 hover:underline transition-colors"
+              >
+                Forgot password?
+              </button>
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
@@ -134,6 +146,18 @@ const AdminLogin = () => {
           </Link>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={showForgotModal}
+        onClose={() => setShowForgotModal(false)}
+        initialEmail={email}
+        isDark={true}
+        onSuccess={({ email: resetEmail, newPassword }) => {
+          setEmail(resetEmail);
+          setPassword(newPassword);
+        }}
+      />
     </div>
   );
 };
