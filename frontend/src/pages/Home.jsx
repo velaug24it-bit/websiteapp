@@ -100,7 +100,7 @@ const Home = () => {
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
                   <img
                     src="/images/products/classic_groundnut_candy.jpg"
-                    alt="Authentic Groundnut Candy (Kadalai Mittai)"
+                    alt="Authentic Groundnut Candy (Velan Kadalai Mittai)"
                     className="w-full h-80 sm:h-96 object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   />
                   {/* Floating Testimonial Pill */}
@@ -111,7 +111,7 @@ const Home = () => {
                           <Star key={i} className="w-3.5 h-3.5 fill-current" />
                         ))}
                       </div>
-                      <p className="text-xs font-bold text-jaggery-900">"Crispiest Kadalai Mittai outside Kovilpatti!"</p>
+                      <p className="text-xs font-bold text-jaggery-900">"Crispiest Velan Kadalai Mittai outside Kovilpatti!"</p>
                       <p className="text-[11px] text-jaggery-500">— Senthil Nathan, Chennai</p>
                     </div>
                     <div className="text-right">
@@ -146,7 +146,7 @@ const Home = () => {
             Handcrafted with South Indian Heritage
           </h2>
           <p className="text-sm text-jaggery-600 mt-2">
-            Every bite of our Kadalai Mittai carries the legacy of authentic Tamil craftsmanship.
+            Every bite of our Velan Kadalai Mittai carries the legacy of authentic Tamil craftsmanship.
           </p>
         </div>
 
@@ -236,7 +236,7 @@ const Home = () => {
               The Legend of Kovilpatti
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-extrabold leading-tight">
-              Why Kovilpatti Kadalai Mittai Holds a GI Tag
+              Why Kovilpatti Velan Kadalai Mittai Holds a GI Tag
             </h2>
             <p className="text-sm sm:text-base text-cream-200 leading-relaxed font-normal">
               Originating from the Thamirabarani river basin, the secret lies in the quality of local groundnuts and the distinct mineral profile of water used to simmer the jaggery syrup. We honor this ancient recipe to deliver the same unmistakable, snap-crisp texture right to your home.

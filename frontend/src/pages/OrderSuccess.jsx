@@ -98,7 +98,7 @@ const OrderSuccess = () => {
           Payment Confirmed & Order Placed!
         </h1>
         <p className="text-emerald-100 text-xs sm:text-sm max-w-lg mx-auto font-medium">
-          Thank you for choosing Kadalai Mittai! Your artisanal groundnut candy batch has been billed and confirmed.
+          Thank you for choosing Velan Kadalai Mittai! Your artisanal groundnut candy batch has been billed and confirmed.
         </p>
 
         {/* Quick Pills */}

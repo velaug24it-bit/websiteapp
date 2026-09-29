@@ -52,7 +52,7 @@ const Register = () => {
             🥜
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-jaggery-900">Create Account</h1>
-          <p className="text-xs text-jaggery-600">Join the Kadalai Mittai family for fresh batch updates & expedited checkout.</p>
+          <p className="text-xs text-jaggery-600">Join the Velan Kadalai Mittai family for fresh batch updates & expedited checkout.</p>
         </div>
 
         {error && (

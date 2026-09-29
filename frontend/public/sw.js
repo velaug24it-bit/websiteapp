@@ -1,5 +1,5 @@
-// Service Worker for Kadalai Mittai PWA
-const CACHE_NAME = 'kadalai-mittai-cache-v1';
+// Service Worker for Velan Kadalai Mittai PWA
+const CACHE_NAME = 'velan-kadalai-mittai-cache-v1';
 
 const STATIC_ASSETS = [
   '/',

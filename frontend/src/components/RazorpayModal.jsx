@@ -45,7 +45,7 @@ const RazorpayModal = ({ isOpen, onClose, orderData, onSuccess, onFailure }) => 
                   Test Mode
                 </span>
               </div>
-              <p className="text-xs text-blue-200">Kadalai Mittai Artisanal Store</p>
+              <p className="text-xs text-blue-200">Velan Kadalai Mittai Artisanal Store</p>
             </div>
           </div>
           <div className="text-right">

@@ -120,7 +120,7 @@ const Checkout = () => {
           key: orderData.keyId,
           amount: orderData.amount,
           currency: orderData.currency || 'INR',
-          name: 'Kadalai Mittai Artisanal Store',
+          name: 'Velan Kadalai Mittai Artisanal Store',
           description: 'Payment for Groundnut Candy Order',
           order_id: orderData.razorpayOrderId,
           handler: async function (response) {

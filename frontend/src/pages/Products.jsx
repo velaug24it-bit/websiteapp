@@ -52,7 +52,7 @@ const Products = () => {
             Our Candy Collection
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-jaggery-900 mt-2">
-            Handcrafted Kadalai Mittai
+            Handcrafted Velan Kadalai Mittai
           </h1>
           <p className="text-sm text-jaggery-600 mt-1">
             Pure jaggery groundnut candies available from 100g travel packs up to 1kg celebratory tins.
@@ -74,7 +74,7 @@ const Products = () => {
             id="product-search-input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search Kadalai Mittai, 100g, 250g, 1kg..."
+            placeholder="Search Velan Kadalai Mittai, 100g, 250g, 1kg..."
             className="w-full pl-10 sm:pl-11 pr-10 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-cream-100 border border-jaggery-200 text-xs sm:text-sm font-medium text-jaggery-900 placeholder:text-jaggery-400 focus:outline-hidden focus:border-brand-500 focus:bg-white transition-all"
           />
           {searchTerm && (

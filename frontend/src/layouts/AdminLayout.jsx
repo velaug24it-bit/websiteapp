@@ -76,7 +76,7 @@ const AdminLayout = () => {
                 🥜
               </div>
               <div>
-                <h2 className="font-serif font-bold text-base text-white leading-tight">Kadalai Mittai</h2>
+                <h2 className="font-serif font-bold text-base text-white leading-tight">Velan Kadalai Mittai</h2>
                 <span className="text-[10px] font-semibold tracking-wider uppercase text-amber-400">
                   Admin Dashboard
                 </span>

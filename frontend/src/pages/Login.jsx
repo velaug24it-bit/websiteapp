@@ -45,7 +45,7 @@ const Login = () => {
             🥜
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-jaggery-900">Welcome Back</h1>
-          <p className="text-xs text-jaggery-600">Sign in to your Kadalai Mittai account to track orders & reorder.</p>
+          <p className="text-xs text-jaggery-600">Sign in to your Velan Kadalai Mittai account to track orders & reorder.</p>
         </div>
 
         {error && (

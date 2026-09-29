@@ -38,7 +38,7 @@ const Navbar = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-jaggery-900 leading-none">
-              Kadalai <span className="text-brand-600">Mittai</span>
+              Velan Kadalai <span className="text-brand-600">Mittai</span>
             </span>
             <span className="text-[9px] sm:text-[11px] font-semibold text-jaggery-500 tracking-widest uppercase mt-0.5 sm:mt-1">
               Traditional Groundnut Candy
@@ -85,7 +85,7 @@ const Navbar = () => {
             onClick={promptInstall}
             id="desktop-download-app-btn"
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200 text-xs font-bold transition-all shadow-xs active:scale-95 group"
-            title="Download Kadalai Mittai Web App"
+            title="Download Velan Kadalai Mittai Web App"
           >
             <Download className="w-3.5 h-3.5 text-brand-700 group-hover:translate-y-0.5 transition-transform" />
             <span>{isInstalled ? 'App Ready' : 'Download App'}</span>

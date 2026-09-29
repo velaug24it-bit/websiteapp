@@ -101,7 +101,7 @@ const MyOrders = () => {
             to="/products"
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-jaggery-800 text-white text-xs font-bold hover:bg-jaggery-900 transition-all"
           >
-            Shop Kadalai Mittai Now
+            Shop Velan Kadalai Mittai Now
           </Link>
         </div>
       ) : (

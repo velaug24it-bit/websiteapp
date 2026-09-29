@@ -1,7 +1,7 @@
 {
   "name": "groundnut-candy-backend",
   "version": "1.0.0",
-  "description": "Express REST API backend for Groundnut Candy / Kadalai Mittai E-Commerce Store",
+  "description": "Express REST API backend for Groundnut Candy / Velan Kadalai Mittai E-Commerce Store",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

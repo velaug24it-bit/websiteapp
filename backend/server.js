@@ -71,7 +71,7 @@ app.get('/', (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kadalai Mittai API Server</title>
+  <title>Velan Kadalai Mittai API Server</title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; background: #FAF7F2; color: #261108; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
     .card { background: white; border: 1px solid #E5D5C5; border-radius: 24px; padding: 32px; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(38,17,8,0.08); }
@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 <body>
   <div class="card">
     <div class="badge"><span class="badge-dot"></span> Backend API Live & Healthy</div>
-    <h1>🥜 Kadalai Mittai API</h1>
+    <h1>🥜 Velan Kadalai Mittai API</h1>
     <p>You have reached the Express REST API backend on Render. Click below to access the website or the admin portal:</p>
     <div class="btn-group">
       <a href="${frontendUrl}/admin/login" class="btn btn-admin">🛡️ Open Admin Portal Login</a>
@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
   }
   return res.status(200).json({
     status: 'online',
-    service: 'Groundnut Candy (Kadalai Mittai) API',
+    service: 'Velan Kadalai Mittai API',
     version: '1.0.0',
     frontend: frontendUrl,
   });
@@ -115,7 +115,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     timestamp: new Date().toISOString(),
-    service: 'Groundnut Candy (Kadalai Mittai) E-Commerce API',
+    service: 'Velan Kadalai Mittai E-Commerce API',
   });
 });
 

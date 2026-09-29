@@ -56,7 +56,7 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               <span className="text-3xl">🥜</span>
               <span className="font-serif text-2xl font-bold text-white">
-                Kadalai <span className="text-brand-400">Mittai</span>
+                Velan Kadalai <span className="text-brand-400">Mittai</span>
               </span>
             </div>
             <p className="text-sm text-jaggery-300 leading-relaxed max-w-sm">
@@ -108,7 +108,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-jaggery-800 text-center text-xs text-jaggery-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Kadalai Mittai. Pure Groundnuts. Handcrafted with Love.</p>
+          <p>© {new Date().getFullYear()} Velan Kadalai Mittai. Pure Groundnuts. Handcrafted with Love.</p>
           <div className="flex items-center gap-4">
             <span className="hover:text-white cursor-pointer">Privacy Policy</span>
             <span>•</span>

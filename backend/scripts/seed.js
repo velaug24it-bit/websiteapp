@@ -23,7 +23,7 @@ const seedData = async () => {
 
     // 1. Create Default Admin
     const admin = await Admin.create({
-      name: 'Kadalai Mittai Admin',
+      name: 'Velan Kadalai Mittai Admin',
       email: 'admin@kadalaicandy.com',
       password: 'Admin@123456',
       role: 'admin',
@@ -43,7 +43,7 @@ const seedData = async () => {
     const products = await Product.create([
       {
         name: 'Classic Groundnut Candy',
-        description: 'Authentic Kovilpatti style crunchy Kadalai Mittai handcrafted using premium golden roasted peanuts and clarified organic jaggery syrup. Traditional crunch in every bite.',
+        description: 'Authentic Kovilpatti style crunchy Velan Kadalai Mittai handcrafted using premium golden roasted peanuts and clarified organic jaggery syrup. Traditional crunch in every bite.',
         ingredients: 'Selected Roasted Peanuts (Groundnuts), Organic Sugarcane Jaggery, Liquid Glucose, Cardamom, Pure Ghee',
         weight: '100g',
         price: 50,
@@ -67,7 +67,7 @@ const seedData = async () => {
       },
       {
         name: 'Family Pack Groundnut Candy',
-        description: 'Wholesome sharing box packed with individually wrapped squares of freshly prepared Kadalai Mittai. Perfect for festive celebrations, healthy evening snacks, and family bonding.',
+        description: 'Wholesome sharing box packed with individually wrapped squares of freshly prepared Velan Kadalai Mittai. Perfect for festive celebrations, healthy evening snacks, and family bonding.',
         ingredients: 'Farm-Fresh Roasted Groundnuts, Traditional Natural Jaggery, Pure Cow Ghee, Nutmeg, Cardamom Powder',
         weight: '500g',
         price: 200,
@@ -79,7 +79,7 @@ const seedData = async () => {
       },
       {
         name: 'Special Pack Groundnut Candy',
-        description: 'Grand master pack for true Kadalai Mittai connoisseurs. Contains our finest heritage recipe candy with extra roasted peanut ratio, zero refined sugar, and pure festive sweetness.',
+        description: 'Grand master pack for true Velan Kadalai Mittai connoisseurs. Contains our finest heritage recipe candy with extra roasted peanut ratio, zero refined sugar, and pure festive sweetness.',
         ingredients: 'Double Roasted Peanuts, Pure Country Palm & Sugarcane Jaggery, Cardamom, Ghee, Dry Ginger',
         weight: '1kg',
         price: 380,

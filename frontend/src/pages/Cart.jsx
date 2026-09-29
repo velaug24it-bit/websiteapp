@@ -31,7 +31,7 @@ const Cart = () => {
           </p>
         )}
         <p className="text-sm text-jaggery-600 max-w-sm mx-auto">
-          You haven't added any crunchy Kadalai Mittai to your cart yet. Explore our handcrafted packs!
+          You haven't added any crunchy Velan Kadalai Mittai to your cart yet. Explore our handcrafted packs!
         </p>
         <div>
           <Link
@@ -54,7 +54,7 @@ const Cart = () => {
         <div>
           <h1 className="font-serif text-3xl font-bold text-jaggery-900">Shopping Cart</h1>
           <div className="flex flex-wrap items-center gap-2 mt-1">
-            <p className="text-xs text-jaggery-600">Review your selected Kadalai Mittai packs and quantities.</p>
+            <p className="text-xs text-jaggery-600">Review your selected Velan Kadalai Mittai packs and quantities.</p>
             {cartUserEmail && (
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-50 text-brand-800 border border-brand-200">
                 👤 Account: {cartUserEmail}
@@ -197,7 +197,7 @@ const Cart = () => {
 
               {subtotal < 150 && (
                 <div className="p-2.5 rounded-xl bg-amber-50 text-[11px] text-amber-800 font-medium">
-                  Add ₹{150 - subtotal} more of Kadalai Mittai to unlock <strong>FREE Delivery</strong>! (Nominal delivery is only ₹15)
+                  Add ₹{150 - subtotal} more of Velan Kadalai Mittai to unlock <strong>FREE Delivery</strong>! (Nominal delivery is only ₹15)
                 </div>
               )}
 

@@ -1,6 +1,6 @@
-# 🥜 Kadalai Mittai - Traditional Groundnut Candy E-Commerce Platform
+# 🥜 Velan Kadalai Mittai - Traditional Groundnut Candy E-Commerce Platform
 
-A production-ready, modern, responsive full-stack e-commerce web application for authentic South Indian Groundnut Candy (Kadalai Mittai), featuring two complete interfaces: **Customer Storefront** and **Admin Dashboard**.
+A production-ready, modern, responsive full-stack e-commerce web application for authentic South Indian Groundnut Candy (Velan Kadalai Mittai), featuring two complete interfaces: **Customer Storefront** and **Admin Dashboard**.
 
 ---
 
@@ -83,7 +83,7 @@ npm install
 node scripts/seed.js
 ```
 The seed script will populate:
-- 4 authentic Kadalai Mittai packs (100g, 250g, 500g, 1kg)
+- 4 authentic Velan Kadalai Mittai packs (100g, 250g, 500g, 1kg)
 - Default Admin account
 - Demo Customer account
 - Sample orders to populate dashboard charts

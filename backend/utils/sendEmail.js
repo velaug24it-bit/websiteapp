@@ -51,7 +51,7 @@ const sendPasswordResetEmail = async ({ to, resetOtp, userName = 'Valued Custome
   const transporter = await createTransporter();
   const fromAddress =
     process.env.EMAIL_FROM ||
-    (process.env.EMAIL_USER ? `"Kadalai Mittai Store" <${process.env.EMAIL_USER}>` : '"Kadalai Mittai Store" <support@kadalaicandy.com>');
+    (process.env.EMAIL_USER ? `"Velan Kadalai Mittai Store" <${process.env.EMAIL_USER}>` : '"Velan Kadalai Mittai Store" <support@kadalaicandy.com>');
 
   const html = `
 <!DOCTYPE html>
@@ -65,7 +65,7 @@ const sendPasswordResetEmail = async ({ to, resetOtp, userName = 'Valued Custome
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #c2410c 0%, #431407 100%); padding: 32px 24px; text-align: center; color: #ffffff;">
       <div style="font-size: 38px; line-height: 1; margin-bottom: 8px;">🥜</div>
-      <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">Kadalai Mittai Store</h1>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">Velan Kadalai Mittai Store</h1>
       <p style="margin: 6px 0 0; font-size: 13px; color: #fed7aa;">Authentic Kovilpatti Groundnut Candy</p>
     </div>
 
@@ -91,7 +91,7 @@ const sendPasswordResetEmail = async ({ to, resetOtp, userName = 'Valued Custome
 
     <!-- Footer -->
     <div style="background-color: #FAF7F2; padding: 20px 24px; text-align: center; border-top: 1px solid #F0ECE4; color: #a8a29e; font-size: 11px;">
-      <p style="margin: 0;">© ${new Date().getFullYear()} Kadalai Mittai Store. All rights reserved.</p>
+      <p style="margin: 0;">© ${new Date().getFullYear()} Velan Kadalai Mittai Store. All rights reserved.</p>
       <p style="margin: 4px 0 0;">Kovilpatti, Tamil Nadu, India</p>
     </div>
   </div>
@@ -102,8 +102,8 @@ const sendPasswordResetEmail = async ({ to, resetOtp, userName = 'Valued Custome
   const info = await transporter.sendMail({
     from: fromAddress,
     to,
-    subject: `🔐 ${resetOtp} is your Kadalai Mittai verification code`,
-    text: `Your password reset code for Kadalai Mittai Store is: ${resetOtp}. This code expires in 15 minutes.`,
+    subject: `🔐 ${resetOtp} is your Velan Kadalai Mittai verification code`,
+    text: `Your password reset code for Velan Kadalai Mittai Store is: ${resetOtp}. This code expires in 15 minutes.`,
     html,
   });
 

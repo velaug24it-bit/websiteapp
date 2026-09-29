@@ -6,7 +6,7 @@ const AdminProfile = () => {
   const { admin, updateProfile } = useAdminAuth();
 
   const [formData, setFormData] = useState({
-    name: admin?.name || 'Kadalai Mittai Admin',
+    name: admin?.name || 'Velan Kadalai Mittai Admin',
     email: admin?.email || 'admin@kadalaicandy.com',
     password: '',
   });

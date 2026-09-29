@@ -17,7 +17,7 @@ const InstallPwaModal = () => {
               🥜
             </div>
             <div>
-              <h3 className="font-serif text-lg font-bold">Install Kadalai Mittai</h3>
+              <h3 className="font-serif text-lg font-bold">Install Velan Kadalai Mittai</h3>
               <p className="text-xs text-cream-200">Use like a native mobile or desktop app</p>
             </div>
           </div>
@@ -36,7 +36,7 @@ const InstallPwaModal = () => {
               <CheckCircle className="w-12 h-12 text-emerald-600 mx-auto" />
               <h4 className="font-serif text-base font-bold text-jaggery-900">App Already Installed!</h4>
               <p className="text-jaggery-600">
-                You can launch Kadalai Mittai directly from your home screen or application launcher.
+                You can launch Velan Kadalai Mittai directly from your home screen or application launcher.
               </p>
             </div>
           ) : (

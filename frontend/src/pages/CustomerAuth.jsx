@@ -106,7 +106,7 @@ const CustomerAuth = ({ defaultTab = 'login', onAuthSuccess }) => {
           🥜
         </div>
         <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-jaggery-900 tracking-tight">
-          Kadalai <span className="text-brand-600">Mittai</span>
+          Velan Kadalai <span className="text-brand-600">Mittai</span>
         </h1>
         <p className="text-xs sm:text-sm font-semibold text-jaggery-600 tracking-wide">
           Authentic Kovilpatti Groundnut Candy Store
@@ -214,7 +214,7 @@ const CustomerAuth = ({ defaultTab = 'login', onAuthSuccess }) => {
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    <span>Enter Kadalai Mittai Store</span>
+                    <span>Enter Velan Kadalai Mittai Store</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

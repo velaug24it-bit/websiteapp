@@ -20,7 +20,7 @@ const CustomerLayout = () => {
         <div className="text-center space-y-3">
           <div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-xs font-bold text-jaggery-800 tracking-wider uppercase">
-            Loading Kadalai Mittai Store...
+            Loading Velan Kadalai Mittai Store...
           </p>
         </div>
       </div>

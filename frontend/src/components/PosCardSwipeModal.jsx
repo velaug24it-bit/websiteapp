@@ -390,7 +390,7 @@ const PosCardSwipeModal = ({
             {/* Bill Receipt Card */}
             <div className="bg-stone-900/90 rounded-2xl p-4 border border-stone-800 text-xs space-y-3 font-sans shadow-inner">
               <div className="text-center pb-2 border-b border-dashed border-stone-700">
-                <p className="font-serif font-bold text-sm text-stone-100">Kadalai Mittai Artisanal Store</p>
+                <p className="font-serif font-bold text-sm text-stone-100">Velan Kadalai Mittai Artisanal Store</p>
                 <p className="text-[10px] text-stone-400">Traditional Kovilpatti Groundnut Sweets</p>
                 <p className="text-[9px] text-stone-500 font-mono mt-0.5">FSSAI Lic: 22424589001924 • GSTIN: 33AAACK4812N1Z4</p>
               </div>
@@ -756,7 +756,7 @@ const PosCardSwipeModal = ({
                   <div className="bg-stone-100 text-stone-900 rounded-xl p-3.5 font-mono text-[10px] space-y-1 shadow-2xl border border-stone-300">
                     <div className="text-center font-bold pb-1 border-b border-dashed border-stone-400">
                       *** TRANSACTION RECORD (CUSTOMER COPY) ***<br />
-                      KADALAI MITTAI ARTISANAL SWEETS<br />
+                      VELAN KADALAI MITTAI ARTISANAL SWEETS<br />
                       KOVILPATTI - TAMIL NADU
                     </div>
                     <div className="flex justify-between pt-1">
