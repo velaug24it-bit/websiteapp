@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velan Kadalai Mittai</title>
+    <script>
+      // Single Page Application Redirect for Deep Links / Refresh
+      // Preserves original path, query, and hash so React Router loads the exact requested page
+      (function() {
+        var path = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        if (path && path !== '/') {
+          sessionStorage.setItem('spa_redirect', path + search + hash);
+        }
+        window.location.replace('/' + search + hash);
+      })();
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'" />
+  </head>
+  <body style="font-family: system-ui, sans-serif; text-align: center; padding: 40px; background-color: #FAF7F2; color: #4A2A17;">
+    <div style="font-size: 32px; margin-bottom: 12px;">🥜</div>
+    <p style="font-size: 14px; font-weight: bold;">Loading Velan Kadalai Mittai...</p>
+  </body>
+</html>

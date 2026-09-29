@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: kadalai-mittai-backend
+    name: velan-kadalai-mittai-backend
     env: node
     plan: free
     rootDir: backend
@@ -13,3 +13,14 @@ services:
         value: 5000
       - key: FRONTEND_URL
         value: https://sweatapp.netlify.app
+
+  - type: web
+    name: velan-kadalai-mittai-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

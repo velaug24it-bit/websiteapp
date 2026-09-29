@@ -1,10 +1,25 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { CartProvider } from './context/CartContext';
 import { PwaProvider } from './context/PwaContext';
 import InstallPwaModal from './components/InstallPwaModal';
+
+// Restore deep link URL on refresh if redirected by static host 404 handler
+const SpaRedirectHandler = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    try {
+      const redirectPath = sessionStorage.getItem('spa_redirect');
+      if (redirectPath) {
+        sessionStorage.removeItem('spa_redirect');
+        navigate(redirectPath, { replace: true });
+      }
+    } catch {}
+  }, [navigate]);
+  return null;
+};
 
 // Customer Layout & Pages
 import CustomerLayout from './layouts/CustomerLayout';
@@ -33,6 +48,7 @@ import AdminProfile from './pages/admin/AdminProfile';
 function App() {
   return (
     <BrowserRouter>
+      <SpaRedirectHandler />
       <AuthProvider>
         <AdminAuthProvider>
           <CartProvider>
