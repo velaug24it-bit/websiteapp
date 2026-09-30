@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Heart, Truck, Award, Phone, Mail, MapPin } from 'lucide-react';
+import { ShieldCheck, Heart, Truck, Award, Phone, Mail, MapPin, Download } from 'lucide-react';
+import { usePwa } from '../context/PwaContext';
 
 const Footer = () => {
+  const { promptInstall, isInstalled } = usePwa();
   return (
     <footer className="bg-jaggery-900 text-cream-100 pt-16 pb-12 border-t border-jaggery-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,6 +81,16 @@ const Footer = () => {
               <li><Link to="/products" className="hover:text-white transition-colors">All Candies & Packs</Link></li>
               <li><Link to="/cart" className="hover:text-white transition-colors">View Cart</Link></li>
               <li><Link to="/my-orders" className="hover:text-white transition-colors">Order Tracking</Link></li>
+              <li>
+                <button
+                  type="button"
+                  onClick={promptInstall}
+                  className="hover:text-brand-300 transition-colors flex items-center gap-1.5 text-brand-400 font-bold"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>{isInstalled ? 'App Ready on Device' : 'Download Mobile App'}</span>
+                </button>
+              </li>
               <li><Link to="/admin/login" className="hover:text-white transition-colors">Admin Dashboard</Link></li>
             </ul>
           </div>

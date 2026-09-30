@@ -1,6 +1,6 @@
 // Service Worker for Velan Kadalai Mittai PWA
-// Version: v3 (Includes failsafe SPA navigation fallback to prevent 404 Not Found on page refresh)
-const CACHE_NAME = 'velan-kadalai-mittai-cache-v3';
+// Version: v4 (Enhanced mobile PWA installability & navigation fallback)
+const CACHE_NAME = 'velan-kadalai-mittai-cache-v4';
 
 const STATIC_ASSETS = [
   '/',
@@ -8,6 +8,8 @@ const STATIC_ASSETS = [
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/icons/icon-maskable-192.png',
+  '/icons/icon-maskable-512.png',
 ];
 
 // Install event - Pre-cache core SPA shell and static assets

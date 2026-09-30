@@ -93,12 +93,27 @@ const Navbar = () => {
         </div>
 
         {/* Right Actions: Cart & Profile */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Quick Mobile App Install Button */}
+          {!isInstalled && (
+            <button
+              type="button"
+              onClick={promptInstall}
+              id="nav-mobile-app-btn"
+              className="md:hidden flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200 text-xs font-bold transition-all shadow-xs active:scale-95"
+              title="Download App"
+              aria-label="Download App"
+            >
+              <Download className="w-3.5 h-3.5 text-brand-700" />
+              <span className="text-[11px]">App</span>
+            </button>
+          )}
+
           {/* Shopping Cart Button */}
           <Link
             to="/cart"
             id="nav-cart-btn"
-            className="relative p-2.5 rounded-full bg-cream-200 text-jaggery-800 hover:bg-brand-100 hover:text-brand-800 transition-all duration-200 shadow-sm flex items-center justify-center group"
+            className="relative p-2 sm:p-2.5 rounded-full bg-cream-200 text-jaggery-800 hover:bg-brand-100 hover:text-brand-800 transition-all duration-200 shadow-sm flex items-center justify-center group"
             aria-label="Shopping Cart"
           >
             <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -199,12 +214,13 @@ const Navbar = () => {
           <div className="pt-1">
             <button
               type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
+              onClick={(e) => {
+                e.preventDefault();
                 promptInstall();
+                setMobileMenuOpen(false);
               }}
               id="mobile-download-app-btn"
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-brand-600 via-brand-700 to-jaggery-800 text-white font-bold text-xs shadow-md active:scale-98 transition-all"
+              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-brand-600 via-brand-700 to-jaggery-800 hover:from-brand-700 hover:to-jaggery-900 text-white font-bold text-xs shadow-md active:scale-98 transition-all"
             >
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
@@ -212,11 +228,11 @@ const Navbar = () => {
                 </div>
                 <div className="text-left">
                   <p className="font-bold leading-tight">{isInstalled ? 'App Ready on Device' : 'Download Web App'}</p>
-                  <p className="text-[10px] text-cream-200 font-normal mt-0.5">Install on home screen for 1-tap access</p>
+                  <p className="text-[10px] text-cream-200 font-normal mt-0.5">Install on phone for 1-tap fast access</p>
                 </div>
               </div>
               <span className="text-[10px] bg-white/25 px-2.5 py-1 rounded-full uppercase tracking-wider font-extrabold shrink-0">
-                INSTALL
+                {isInstalled ? 'INSTALLED' : 'INSTALL'}
               </span>
             </button>
           </div>

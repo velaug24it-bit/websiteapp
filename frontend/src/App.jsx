@@ -5,6 +5,7 @@ import { AdminAuthProvider } from './context/AdminAuthContext';
 import { CartProvider } from './context/CartContext';
 import { PwaProvider } from './context/PwaContext';
 import InstallPwaModal from './components/InstallPwaModal';
+import MobileInstallBanner from './components/MobileInstallBanner';
 
 // Restore deep link URL on refresh if redirected by static host 404 handler
 const SpaRedirectHandler = () => {
@@ -54,6 +55,7 @@ function App() {
           <CartProvider>
             <PwaProvider>
               <InstallPwaModal />
+              <MobileInstallBanner />
               <Routes>
               {/* Customer Routes */}
               <Route path="/" element={<CustomerLayout />}>
